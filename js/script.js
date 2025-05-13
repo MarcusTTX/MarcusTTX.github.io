@@ -1,5 +1,5 @@
 (function ($) {
-    'use strict';
+     'use strict';
 
 
 
@@ -136,6 +136,52 @@
         ]
     });
 
+    // Odomenter
+    const createOdometer = (el, value) => {
+        const odometer = new Odometer({
+            el: el,
+            value: 0,
+        });
+
+        let hasRun = false;
+
+        const options = {
+            threshold: [0, 0.9],
+        };
+
+        const callback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (!hasRun) {
+                        odometer.update(value);
+                        hasRun = true;
+                    }
+             }
+            });
+        };
+    
+        const observer = new IntersectionObserver(callback, options);
+        observer.observe(el);
+    };
+
+    const unrealOdometer = document.querySelector(".unreal-odometer");
+    createOdometer(unrealOdometer, 80);
+    const unityOdometer = document.querySelector(".unity-odometer");
+    createOdometer(unityOdometer, 80);
+    const gdOdometer = document.querySelector(".GD-odometer");
+    createOdometer(gdOdometer, 80);
+    const ldOdometer = document.querySelector(".LD-odometer");
+    createOdometer(ldOdometer, 70);
+    const gpOdometer = document.querySelector(".GP-odometer");
+    createOdometer(gpOdometer, 70);
+    const htmlOdometer = document.querySelector(".html-odometer");
+    createOdometer(htmlOdometer, 90);
+    const cccOdometer = document.querySelector(".ccc-odometer");
+    createOdometer(cccOdometer, 85);
+    const ccOdometer = document.querySelector(".cc-odometer");
+    createOdometer(ccOdometer, 70);
+
+    // ThIS NEEDED TO BE PLACE LAST
     // Shuffle js filter and masonry
     var Shuffle = window.Shuffle;
     var jQuery = window.jQuery;
@@ -151,7 +197,5 @@
             myShuffle.filter(input.value);
         }
     });
-
-
 
 })(jQuery);

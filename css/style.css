@@ -907,4 +907,21 @@ blockquote {
   font-weight: bold;
 }
 
+#odometer {
+  font-size: 20px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.odometer.percentage {
+  position: relative;
+}
+
+.odometer.percentage::after {
+  content: "%";
+  position: absolute;
+  top: 0;
+  right: -20px;
+}
+
 /*# sourceMappingURL=maps/style.css.map */

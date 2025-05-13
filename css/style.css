@@ -729,6 +729,9 @@ textarea.form-control {
 /* footer */
 .footer-section {
   padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .section-on-footer {
@@ -758,7 +761,7 @@ textarea.form-control {
 
 @media (max-width: 991px) {
   .card-lg {
-    flex-direction: column;
+    flex-direction: row;
   }
 }
 

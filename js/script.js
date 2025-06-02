@@ -1,8 +1,6 @@
 (function ($) {
      'use strict';
 
-
-
     // Sticky Menu
     $(window).scroll(function () {
         if ($('.navigation').offset().top > 100) {
@@ -38,40 +36,25 @@
     window.onload = function () {
 
         var parallaxBox = document.getElementById('parallax');
-        var
-            /* c1left = document.getElementById('l1').offsetLeft,
-                       c1top = document.getElementById('l1').offsetTop, */
-            c2left = document.getElementById('l2').offsetLeft,
-            c2top = document.getElementById('l2').offsetTop,
-            c3left = document.getElementById('l3').offsetLeft,
-            c3top = document.getElementById('l3').offsetTop,
-            c4left = document.getElementById('l4').offsetLeft,
-            c4top = document.getElementById('l4').offsetTop,
-            c5left = document.getElementById('l5').offsetLeft,
-            c5top = document.getElementById('l5').offsetTop,
-            c6left = document.getElementById('l6').offsetLeft,
-            c6top = document.getElementById('l6').offsetTop,
-            c7left = document.getElementById('l7').offsetLeft,
-            c7top = document.getElementById('l7').offsetTop,
-            c8left = document.getElementById('l8').offsetLeft,
-            c8top = document.getElementById('l8').offsetTop,
-            c9left = document.getElementById('l9').offsetLeft,
-            c9top = document.getElementById('l9').offsetTop;
+        if (!parallaxBox) return; // 🔧 Prevent crash on pages without #parallax
+
+        var ids = ['l2', 'l3', 'l4', 'l5', 'l6', 'l7', 'l8', 'l9'];
+        var coords = {};
+
+        ids.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                coords[id] = { left: el.offsetLeft, top: el.offsetTop };
+            }
+        });
 
         parallaxBox.onmousemove = function (event) {
-            event = event || window.event;
-            var x = event.clientX - parallaxBox.offsetLeft,
-                y = event.clientY - parallaxBox.offsetTop;
+            const x = event.clientX - parallaxBox.offsetLeft;
+            const y = event.clientY - parallaxBox.offsetTop;
 
-            /*  mouseParallax('l1', c1left, c1top, x, y, 5); */
-            mouseParallax('l2', c2left, c2top, x, y, 25);
-            mouseParallax('l3', c3left, c3top, x, y, 20);
-            mouseParallax('l4', c4left, c4top, x, y, 35);
-            mouseParallax('l5', c5left, c5top, x, y, 30);
-            mouseParallax('l6', c6left, c6top, x, y, 45);
-            mouseParallax('l7', c7left, c7top, x, y, 30);
-            mouseParallax('l8', c8left, c8top, x, y, 25);
-            mouseParallax('l9', c9left, c9top, x, y, 40);
+            Object.entries(coords).forEach(([id, { left, top }]) => {
+                mouseParallax(id, left, top, x, y, 30);
+            });
         };
 
     };
@@ -137,64 +120,119 @@
     });
 
     // Odomenter
-    const createOdometer = (el, value) => {
-        const odometer = new Odometer({
-            el: el,
-            value: 0,
+    if (typeof Odometer !== 'undefined') {
+        const createOdometer = (el, value) => {
+            if (!el) {
+                console.warn("Odometer target not found.");
+                return;
+            }
+
+            if (typeof Odometer === "undefined") {
+                console.error("Odometer is not loaded.");
+                return;
+            }
+            
+            const odometer = new Odometer({
+                el: el,
+                value: 0,
+            });
+
+            let hasRun = false;
+
+            const options = {
+                threshold: [0, 0.9],
+            };
+
+            const callback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if (!hasRun) {
+                            odometer.update(value);
+                            hasRun = true;
+                        }
+                }
+                });
+            };
+        
+            const observer = new IntersectionObserver(callback, options);
+            observer.observe(el);
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const odometers = [
+                { selector: ".unreal-odometer", value: 80 },
+                { selector: ".unity-odometer", value: 80 },
+                { selector: ".GD-odometer", value: 80 },
+                { selector: ".LD-odometer", value: 70 },
+                { selector: ".GP-odometer", value: 70 },
+                { selector: ".html-odometer", value: 90 },
+                { selector: ".ccc-odometer", value: 85 },
+                { selector: ".cc-odometer", value: 70 },
+            ];
+
+            odometers.forEach(({ selector, value }) => {
+                const el = document.querySelector(selector);
+                createOdometer(el, value);
+            });
         });
 
-        let hasRun = false;
+    } else {
+        console.warn("Odometer not loaded");
+    }
 
-        const options = {
-            threshold: [0, 0.9],
-        };
+    // const unrealOdometer = document.querySelector(".unreal-odometer");
+    // createOdometer(unrealOdometer, 80);
+    // const unityOdometer = document.querySelector(".unity-odometer");
+    // createOdometer(unityOdometer, 80);
+    // const gdOdometer = document.querySelector(".GD-odometer");
+    // createOdometer(gdOdometer, 80);
+    // const ldOdometer = document.querySelector(".LD-odometer");
+    // createOdometer(ldOdometer, 70);
+    // const gpOdometer = document.querySelector(".GP-odometer");
+    // createOdometer(gpOdometer, 70);
+    // const htmlOdometer = document.querySelector(".html-odometer");
+    // createOdometer(htmlOdometer, 90);
+    // const cccOdometer = document.querySelector(".ccc-odometer");
+    // createOdometer(cccOdometer, 85);
+    // const ccOdometer = document.querySelector(".cc-odometer");
+    // createOdometer(ccOdometer, 70);
 
-        const callback = (entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    if (!hasRun) {
-                        odometer.update(value);
-                        hasRun = true;
-                    }
-             }
-            });
-        };
-    
-        const observer = new IntersectionObserver(callback, options);
-        observer.observe(el);
-    };
-
-    const unrealOdometer = document.querySelector(".unreal-odometer");
-    createOdometer(unrealOdometer, 80);
-    const unityOdometer = document.querySelector(".unity-odometer");
-    createOdometer(unityOdometer, 80);
-    const gdOdometer = document.querySelector(".GD-odometer");
-    createOdometer(gdOdometer, 80);
-    const ldOdometer = document.querySelector(".LD-odometer");
-    createOdometer(ldOdometer, 70);
-    const gpOdometer = document.querySelector(".GP-odometer");
-    createOdometer(gpOdometer, 70);
-    const htmlOdometer = document.querySelector(".html-odometer");
-    createOdometer(htmlOdometer, 90);
-    const cccOdometer = document.querySelector(".ccc-odometer");
-    createOdometer(cccOdometer, 85);
-    const ccOdometer = document.querySelector(".cc-odometer");
-    createOdometer(ccOdometer, 70);
-
-    // ThIS NEEDED TO BE PLACE LAST
     // Shuffle js filter and masonry
-    var Shuffle = window.Shuffle;
-    var jQuery = window.jQuery;
+    // var Shuffle = window.Shuffle;
+    // var jQuery = window.jQuery;
 
-    var myShuffle = new Shuffle(document.querySelector('.shuffle-wrapper'), {
-        itemSelector: '.shuffle-item',
-        buffer: 1
-    });
+    // var myShuffle = new Shuffle(document.querySelector('.shuffle-wrapper'), {
+    //     itemSelector: '.shuffle-item',
+    //     buffer: 1
+    // });
 
-    jQuery('input[name="shuffle-filter"]').on('change', function (evt) {
-        var input = evt.currentTarget;
-        if (input.checked) {
-            myShuffle.filter(input.value);
+    // jQuery('input[name="shuffle-filter"]').on('change', function (evt) {
+    //     var input = evt.currentTarget;
+    //     if (input.checked) {
+    //         myShuffle.filter(input.value);
+    //     }
+    // });
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        var Shuffle = window.Shuffle;
+        var wrapper = document.querySelector('.shuffle-wrapper');
+
+        if (Shuffle && wrapper) {
+            var myShuffle = new Shuffle(wrapper, {
+            itemSelector: '.shuffle-item',
+            buffer: 1,
+            });
+
+            document.querySelectorAll('input[name="shuffle-filter"]').forEach(input => {
+            input.addEventListener('change', function (evt) {
+                if (evt.currentTarget.checked) {
+                const value = input.value;
+                myShuffle.filter(value === "all" ? Shuffle.ALL_ITEMS : value);
+                }
+            });
+            });
+        } else {
+            console.log('Shuffle not initialized: Shuffle or .shuffle-wrapper missing on this page.');
         }
     });
 

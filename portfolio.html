@@ -87,19 +87,11 @@
   <div class="container">
     <div class="row mb-5">
       <div class="col-12">
-        <div class="btn-group btn-group-toggle justify-content-center d-flex" data-toggle="buttons">
-          <label class="btn btn-sm btn-primary active">
-            <input type="radio" name="shuffle-filter" value="all" checked="checked" />All
-          </label>
-          <label class="btn btn-sm btn-primary">
-            <input type="radio" name="shuffle-filter" value="design" />GAME DEVELOPMENT
-          </label>
-          <label class="btn btn-sm btn-primary">
-            <input type="radio" name="shuffle-filter" value="branding" />GAMEPLAY/LEVEL DESIGN
-          </label>
-          <label class="btn btn-sm btn-primary">
-            <input type="radio" name="shuffle-filter" value="illustration" />UX/UI DESIGN
-          </label>
+        <div class="btn-group justify-content-center d-flex mb-4" id="filter-buttons">
+          <div class="btn btn-sm btn-primary active" data-group="all">All</div>
+          <div class="btn btn-sm btn-primary" data-group="design">Game Dev</div>
+          <div class="btn btn-sm btn-primary" data-group="branding">Level Design</div>
+          <div class="btn btn-sm btn-primary" data-group="illustration">UI/UX</div>
         </div>
       </div>
     </div>

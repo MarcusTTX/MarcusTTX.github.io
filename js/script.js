@@ -213,26 +213,53 @@
     //     }
     // });
     
-    document.addEventListener("DOMContentLoaded", function () {
-        var Shuffle = window.Shuffle;
-        var wrapper = document.querySelector('.shuffle-wrapper');
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     var Shuffle = window.Shuffle;
+    //     var wrapper = document.querySelector('.shuffle-wrapper');
 
-        if (Shuffle && wrapper) {
-            var myShuffle = new Shuffle(wrapper, {
-            itemSelector: '.shuffle-item',
-            buffer: 1,
+    //     if (Shuffle && wrapper) {
+    //         var myShuffle = new Shuffle(wrapper, {
+    //         itemSelector: '.shuffle-item',
+    //         buffer: 1,
+    //         });
+
+    //         document.querySelectorAll('input[name="shuffle-filter"]').forEach(input => {
+    //         input.addEventListener('change', function (evt) {
+    //             if (evt.currentTarget.checked) {
+    //             const value = input.value;
+    //             myShuffle.filter(value === "all" ? Shuffle.ALL_ITEMS : value);
+    //             }
+    //         });
+    //         });
+    //     } else {
+    //         console.log('Shuffle not initialized: Shuffle or .shuffle-wrapper missing on this page.');
+    //     }
+    // });
+    
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("DOMContentLoaded triggered"); // ✅ Must appear
+
+        const Shuffle = window.Shuffle;
+        const container = document.querySelector(".shuffle-wrapper");
+
+        if (Shuffle && container) {
+            const myShuffle = new Shuffle(container, {
+                itemSelector: ".shuffle-item",
+                buffer: 1,
             });
 
-            document.querySelectorAll('input[name="shuffle-filter"]').forEach(input => {
-            input.addEventListener('change', function (evt) {
-                if (evt.currentTarget.checked) {
-                const value = input.value;
-                myShuffle.filter(value === "all" ? Shuffle.ALL_ITEMS : value);
-                }
+            // Click-based filter buttons
+            const buttons = document.querySelectorAll("#filter-buttons .btn");
+
+            buttons.forEach(button => {
+                button.addEventListener("click", () => {
+                document.querySelector("#filter-buttons .btn.active")?.classList.remove("active");
+                button.classList.add("active");
+
+                const group = button.dataset.group;
+                myShuffle.filter(group === "all" ? Shuffle.ALL_ITEMS : group);
+                });
             });
-            });
-        } else {
-            console.log('Shuffle not initialized: Shuffle or .shuffle-wrapper missing on this page.');
         }
     });
 

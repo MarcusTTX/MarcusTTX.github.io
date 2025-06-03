@@ -248,16 +248,52 @@
                 buffer: 1,
             });
 
-            // Click-based filter buttons
-            const buttons = document.querySelectorAll("#filter-buttons .btn");
+            const mainButtons = document.querySelectorAll("#filter-buttons .btn");
+            const subButtons = document.querySelectorAll("#subfilter-buttons .btn");
+            const subfilterWrapper = document.getElementById("subfilter-buttons");
 
-            buttons.forEach(button => {
+            let currentMain = "all";
+            let currentSub = null;
+
+            const updateFilter = () => {
+                if (currentMain === "all") {
+                myShuffle.filter(Shuffle.ALL_ITEMS);
+                } else if (!currentSub) {
+                myShuffle.filter(currentMain);
+                } else {
+                // Combined filter: e.g., ["design", "unity"]
+                myShuffle.filter((el) => {
+                    const groups = JSON.parse(el.dataset.groups || "[]");
+                    return groups.includes(currentMain) && groups.includes(currentSub);
+                });
+                }
+            };
+
+            mainButtons.forEach(button => {
                 button.addEventListener("click", () => {
-                document.querySelector("#filter-buttons .btn.active")?.classList.remove("active");
-                button.classList.add("active");
+                    document.querySelector("#filter-buttons .btn.active")?.classList.remove("active");
+                    button.classList.add("active");
 
-                const group = button.dataset.group;
-                myShuffle.filter(group === "all" ? Shuffle.ALL_ITEMS : group);
+                    currentMain = button.dataset.group;
+                    currentSub = null;
+
+                    // Toggle subfilter visibility and reset subfilter state
+                    subfilterWrapper.hidden = currentMain !== "GameDev";
+                    subButtons.forEach(btn => btn.classList.remove("active"));
+
+                    updateFilter();
+                    console.log("Main selected:", currentMain);
+                    console.log("Subfilter hidden?", subfilterWrapper.hidden);
+                });
+            });
+
+            subButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    subButtons.forEach(btn => btn.classList.remove("active"));
+                    button.classList.add("active");
+
+                    currentSub = button.dataset.subgroup;
+                    updateFilter();
                 });
             });
         }

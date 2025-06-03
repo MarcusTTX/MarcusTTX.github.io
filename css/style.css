@@ -937,8 +937,14 @@ blockquote {
 
 #aboutMe {
   background: white;
-  border-radius: 25px;
+  border-radius: 15px 50px;
   padding: 20px;
+}
+
+#subfilter-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 /*# sourceMappingURL=maps/style.css.map */

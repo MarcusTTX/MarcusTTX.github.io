@@ -299,4 +299,19 @@
         }
     });
 
+  // Show "Back to Top" button only when scrolling down
+  window.onscroll = function() {
+    const topButton = document.getElementById("backToTop");
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+      topButton.style.display = "block";
+    } else {
+      topButton.style.display = "none";
+    }
+  };
+
+  // Smooth scroll to top
+  document.getElementById("backToTop").addEventListener("click", function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  
 })(jQuery);

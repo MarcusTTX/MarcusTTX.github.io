@@ -599,13 +599,12 @@ textarea.form-control {
   width: 100%;
   height: auto;
   z-index: -1;
-  pointer-events: none; /* optional: so it doesn’t block clicks */
+  pointer-events: none;
 }
 
-/* Make sure the section wraps around it properly */
 section.position-relative {
   position: relative;
-  overflow: hidden; /* This is key: prevents the image from pushing the page */
+  overflow: hidden; 
 }
 
 /* /education */
@@ -992,3 +991,33 @@ blockquote {
   display: none;
 }
 /*# sourceMappingURL=maps/style.css.map */
+
+/*Ribbon*/
+.ribbons-bottom-left {
+  position: absolute;
+  bottom: 8px;   /* small padding from corner */
+  left: -5px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;      /* space between ribbons */
+  pointer-events: none;
+}
+
+.ribbon {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px 6px 6px 0; /* rounded top-left & bottom-left corner */
+  backdrop-filter: blur(6px);   /* subtle glass effect */
+  background: rgba(0,0,0,0.6); /* semi-transparent dark overlay */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Optional: Different ribbon types/colors */
+.ribbon.status { background: rgba(231, 76, 60, 0.85); }   /* Alpha/Beta/Complete */
+.ribbon.engine { background: rgba(39, 174, 96, 0.85); }  /* Unity/Unreal/Custom */
+.ribbon.type { background: rgba(41, 128, 185, 0.85); }    /* GameDev/GameDesign/LevelDesign */

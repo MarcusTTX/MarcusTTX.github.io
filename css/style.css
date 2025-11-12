@@ -594,9 +594,18 @@ textarea.form-control {
 /* education */
 .edu-bg-image {
   position: absolute;
+  bottom: 0;
   left: 0;
-  top: -300px;
+  width: 100%;
+  height: auto;
   z-index: -1;
+  pointer-events: none; /* optional: so it doesn’t block clicks */
+}
+
+/* Make sure the section wraps around it properly */
+section.position-relative {
+  position: relative;
+  overflow: hidden; /* This is key: prevents the image from pushing the page */
 }
 
 /* /education */
